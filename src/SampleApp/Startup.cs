@@ -1,4 +1,5 @@
 ﻿using OnDotNet.Owin.Shield.Frameguard;
+using OnDotNet.Owin.Shield.IENoOpen;
 using OnDotNet.Owin.Shield.NoSniff;
 using OnDotNet.Owin.Shield.XssFilter;
 using Owin;
@@ -12,6 +13,7 @@ namespace SampleApp
             app.Frameguard(XFrameOptions.Deny);
             app.XssFilter(true);
             app.NoSniff();
+            app.IENoOpen();
             app.UseWelcomePage();
         }
     }

@@ -5,3 +5,4 @@ OnDotNet.Owin.Shield is a collection of OWIN security middleware.
 * Frameguard
 * XssFilter
 * NoSniff
+* IENoOpen
