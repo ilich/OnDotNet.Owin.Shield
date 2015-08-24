@@ -39,7 +39,23 @@ namespace OnDotNet.Owin.Shield.XssFilter
             else
             {
                 var userAgent = _getUserAgent(context) ?? string.Empty;
-                header = Regex.IsMatch(userAgent, @"msie\s*(\d+)", RegexOptions.IgnoreCase) ? "1; mode=block" : "0";
+                var matches = Regex.Match(userAgent, @"msie\s*(\d+)", RegexOptions.IgnoreCase);
+                if (!matches.Success)
+                {
+                    header = "1; mode=block";
+                }
+                else
+                {
+                    int ieVersion;
+                    if (!int.TryParse(matches.Groups[1].Value, out ieVersion))
+                    {
+                        header = "1; mode=block";
+                    }
+                    else
+                    {
+                        header = ieVersion >= 9 ? "1; mode=block" : "0";
+                    }
+                }
             }
 
             var headers = context.Response.Headers;
