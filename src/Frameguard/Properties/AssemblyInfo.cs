@@ -1,11 +1,10 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("OnDotNet.Owin.Shield.IpGeoBlock")]
+[assembly: AssemblyTitle("OnDotNet.Owin.Shield.Frameguard")]
 [assembly: AssemblyDescription("OWIN Security Middleware")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Ilya Verbitskiy")]
@@ -20,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("cbd74a70-a721-4ca3-8995-9079b0a1362b")]
+[assembly: Guid("2d6776f2-2c98-43a1-b8d3-bc2d952bacfd")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -34,4 +33,3 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("0.1.*")]
 [assembly: AssemblyFileVersion("0.1.0.0")]
-[assembly: InternalsVisibleTo("OnDotNet.Owin.Shield.Tests.IpGeoBlock")]
