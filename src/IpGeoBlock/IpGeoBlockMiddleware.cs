@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
@@ -111,7 +110,6 @@ namespace OnDotNet.Owin.Shield.IpGeoBlock
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(true);
         }
 
         protected virtual void Dispose(bool disposing)
