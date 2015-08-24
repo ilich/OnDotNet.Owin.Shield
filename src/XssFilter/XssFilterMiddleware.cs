@@ -12,6 +12,8 @@ namespace OnDotNet.Owin.Shield.XssFilter
     public class XssFilterMiddleware : OwinMiddleware
     {
         private const string XssProtection = "X-XSS-Protection";
+        private const string Blocked = "1; mode=block";
+        private const string Unblocked = "0";
 
         private readonly bool _setOnOldIE;
         private readonly UserAgentFunc _getUserAgent = c => c.Request.Headers.Get("User-Agent");
@@ -34,28 +36,11 @@ namespace OnDotNet.Owin.Shield.XssFilter
 
             if (_setOnOldIE)
             {
-                header = "1; mode=block";
+                header = Blocked;
             }
             else
             {
-                var userAgent = _getUserAgent(context) ?? string.Empty;
-                var matches = Regex.Match(userAgent, @"msie\s*(\d+)", RegexOptions.IgnoreCase);
-                if (!matches.Success)
-                {
-                    header = "1; mode=block";
-                }
-                else
-                {
-                    int ieVersion;
-                    if (!int.TryParse(matches.Groups[1].Value, out ieVersion))
-                    {
-                        header = "1; mode=block";
-                    }
-                    else
-                    {
-                        header = ieVersion >= 9 ? "1; mode=block" : "0";
-                    }
-                }
+                header = ParseUserAgent(context);
             }
 
             var headers = context.Response.Headers;
@@ -69,6 +54,30 @@ namespace OnDotNet.Owin.Shield.XssFilter
             }
 
             return Next.Invoke(context);
+        }
+
+        private string ParseUserAgent(IOwinContext context)
+        {
+            string header;
+            var userAgent = _getUserAgent(context) ?? string.Empty;
+            var matches = Regex.Match(userAgent, @"msie\s*(\d+)", RegexOptions.IgnoreCase);
+            if (!matches.Success)
+            {
+                header = Blocked;
+            }
+            else
+            {
+                int ieVersion;
+                if (!int.TryParse(matches.Groups[1].Value, out ieVersion))
+                {
+                    header = Blocked;
+                }
+                else
+                {
+                    header = ieVersion >= 9 ? Blocked : Unblocked;
+                }
+            }
+            return header;
         }
     }
 }
