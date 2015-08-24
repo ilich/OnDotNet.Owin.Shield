@@ -20,7 +20,7 @@ namespace OnDotNet.Owin.Shield.XssFilter
             bool setOnOldIE,
             UserAgentFunc getUserAgent)
         {
-            app.Use<XssFilter>(setOnOldIE, getUserAgent);
+            app.Use<XssFilterMiddleware>(setOnOldIE, getUserAgent);
         }
     }
 }

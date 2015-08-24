@@ -9,14 +9,14 @@ namespace OnDotNet.Owin.Shield.XssFilter
 {
     using UserAgentFunc = Func<IOwinContext, string>;
 
-    public class XssFilter : OwinMiddleware
+    public class XssFilterMiddleware : OwinMiddleware
     {
         private const string XssProtection = "X-XSS-Protection";
 
         private readonly bool _setOnOldIE;
         private readonly UserAgentFunc _getUserAgent = c => c.Request.Headers.Get("User-Agent");
 
-        public XssFilter(
+        public XssFilterMiddleware(
             OwinMiddleware next,
             bool setOnOldIE = false,
             UserAgentFunc getUserAgent = null) : base(next)

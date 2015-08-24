@@ -50,7 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="XssFilter.cs" />
+    <Compile Include="XssFilterMiddleware.cs" />
     <Compile Include="XssFilterExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
