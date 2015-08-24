@@ -10,20 +10,18 @@ using Microsoft.Owin;
 
 namespace OnDotNet.Owin.Shield.IpGeoBlock
 {
-    using AppFunc = Func<IDictionary<string, object>, Task>;
     using RemoteIdAddressFunc = Func<IOwinContext, string>;
 
-    public class IpGeoBlockMiddleware : IDisposable
+    public class IpGeoBlockMiddleware : OwinMiddleware, IDisposable
     {
-        private readonly AppFunc _next;
         private readonly IpGeoBlockOptions _options;
         private readonly RemoteIdAddressFunc _getRemoteIpAddress = c => c.Request.RemoteIpAddress;
         private readonly DatabaseReader _ipDbReader;
 
         public IpGeoBlockMiddleware(
-            AppFunc next, 
+            OwinMiddleware next, 
             IpGeoBlockOptions options,
-            RemoteIdAddressFunc getRemoteIpAddress = null)
+            RemoteIdAddressFunc getRemoteIpAddress = null) : base(next)
         {
             if (next == null)
             {
@@ -52,7 +50,6 @@ namespace OnDotNet.Owin.Shield.IpGeoBlock
                 throw new InvalidOperationException("You have to choose only allowed contries or only blocked countries.");
             }
 
-            _next = next;
             _options = options;
             _ipDbReader = new DatabaseReader(_options.GeoLite2Path);
 
@@ -62,19 +59,18 @@ namespace OnDotNet.Owin.Shield.IpGeoBlock
             }
         }
 
-        public Task Invoke(IDictionary<string, object> environment)
+        public override Task Invoke(IOwinContext context)
         {
-            var owinContext = new OwinContext(environment);
-            var ipAddress = _getRemoteIpAddress(owinContext);
+            var ipAddress = _getRemoteIpAddress(context);
             if (IsBlocked(ipAddress))
             {
-                owinContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                return owinContext.Response.WriteAsync("Forbidden");
+                context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                return context.Response.WriteAsync("Forbidden");
             }
 
-            return _next(environment);
+            return Next.Invoke(context);
         }
-
+        
         private bool IsBlocked(string ipAddress)
         {
             // 1. Check that IP address is blocked
