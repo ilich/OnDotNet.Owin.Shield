@@ -40,7 +40,7 @@ namespace OnDotNet.Owin.Shield.IpGeoBlock
 
             if (!File.Exists(options.GeoLite2Path))
             {
-                throw new FileNotFoundException($"MaxMind GeoLit2 Country database is not found in {options.GeoLite2Path}. Please download the database from https://dev.maxmind.com/geoip/geoip2/geolite2/.");
+                throw new FileNotFoundException($"MaxMind GeoLit2 Country database is not found at {options.GeoLite2Path}. Please download the database from https://dev.maxmind.com/geoip/geoip2/geolite2/.");
             }
 
             // Check that user added only denied countries or only allowed countries
